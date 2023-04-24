@@ -1,0 +1,42 @@
+pipeline {​​​​​​​​
+  agent any
+  tools {​​​​​​​​
+    maven 'Maven3.9.0'
+    nodejs "node"
+  }​​​​​​​​
+  stages {​​​​​​​​
+    stage('Checkout') {​​​​​​​​
+      steps {​​​​​​​​
+        script {​​​​​​​​
+          // The below will clone your repo and will be checked out to master branch by default.
+          git url: 'https://github.com/cx-matts/EquityTradingApp.git'
+          // Do a ls -lart to view all the files are cloned. It will be clonned. This is just for you to be sure about it.
+          sh "ls -lart ./*" 
+          // List all branches in your repo. 
+          sh "git branch -a"
+          // Checkout to a specific branch in your repo.
+          sh "git checkout master"
+        }​​​​​​​​
+      }​​​​​​​​
+    }​​​​​​​​
+    stage('Run Linting'){​​​​​​​​
+      steps {​​​​​​​​
+        sleep 1
+        echo 'Run Linter (SonarQube)'
+      }​​​​​​​​        
+    }​​​​​​​​
+    stage('Scan Packages') {​​​​​​​​
+      steps {​​​​​​​​
+        script {​​​​​​​​
+          sh "/var/jenkins_home/ScaResolver -a forrester -u admin -p 'BLAHHHHHHH!' -s /var/jenkins_home/workspace/EquityTradingApp -n EquityTradingApp"
+        }​​​​​​​​
+      }​​​​​​​​
+    }​​​​​​​​ 
+    stage('Build') {​​​​​​​​
+      steps {​​​​​​​​
+        sleep 1
+        echo 'Build'
+      }​​​​​​​​
+    }​​​​​​​​
+  }​​​​​​​​
+}
